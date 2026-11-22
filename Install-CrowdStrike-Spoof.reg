@@ -1,0 +1,50 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================
+; SealSuite / CorpLink 准入策略伪装 —— 使本地"已安装软件"检查判定 CrowdStrike 已安装
+;
+; 背景：corplink-service.exe 读取注册表卸载项 SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
+;       下的 DisplayName / Publisher，与服务端下发的 baseline 策略比对
+;       (software_name "Crowdstrike" / software_id "CrowdStrike Windows Sensor" / publisher "CrowdStrike, Inc.")
+;       它不检查服务、进程或文件，因此仅写入卸载项即可通过本地检查。
+;
+; 说明：写入 HKEY_CURRENT_USER，无需管理员权限；64 位与 WOW6432Node 两个视图各写一条，
+;       以适配 32 位/64 位进程的不同读取方式。
+; 撤销：运行 Remove-CrowdStrike-Spoof.reg
+; ============================================================
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\{2A4E1C99-1B3F-4A1B-9C3E-5D7F8A9B0C1D}]
+"DisplayName"="CrowdStrike Windows Sensor"
+"Publisher"="CrowdStrike, Inc."
+"DisplayVersion"="7.12.0.0"
+"InstallLocation"="C:\\Program Files\\CrowdStrike\\CSFalcon"
+"DisplayIcon"="C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe"
+"UninstallString"="\"C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe\" -uninstall"
+"NoSystemComponent"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\{7C3B5E11-4D2A-4F8B-B6C4-2E9A1D3B7F52}]
+"DisplayName"="Crowdstrike"
+"Publisher"="CrowdStrike, Inc."
+"DisplayVersion"="7.12.0.0"
+"InstallLocation"="C:\\Program Files\\CrowdStrike\\CSFalcon"
+"DisplayIcon"="C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe"
+"UninstallString"="\"C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe\" -uninstall"
+"NoSystemComponent"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{2A4E1C99-1B3F-4A1B-9C3E-5D7F8A9B0C1D}]
+"DisplayName"="CrowdStrike Windows Sensor"
+"Publisher"="CrowdStrike, Inc."
+"DisplayVersion"="7.12.0.0"
+"InstallLocation"="C:\\Program Files\\CrowdStrike\\CSFalcon"
+"DisplayIcon"="C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe"
+"UninstallString"="\"C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe\" -uninstall"
+"NoSystemComponent"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{7C3B5E11-4D2A-4F8B-B6C4-2E9A1D3B7F52}]
+"DisplayName"="Crowdstrike"
+"Publisher"="CrowdStrike, Inc."
+"DisplayVersion"="7.12.0.0"
+"InstallLocation"="C:\\Program Files\\CrowdStrike\\CSFalcon"
+"DisplayIcon"="C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe"
+"UninstallString"="\"C:\\Program Files\\CrowdStrike\\CSFalcon\\CSFalconService.exe\" -uninstall"
+"NoSystemComponent"=dword:00000000

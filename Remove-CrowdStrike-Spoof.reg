@@ -1,0 +1,23 @@
+Windows Registry Editor Version 5.00
+
+; ============================================================
+; 解除 SealSuite / CorpLink 准入策略伪装
+;
+; 删除 Install-CrowdStrike-Spoof.reg 写入的 4 个卸载项键：
+;   HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\{2A4E1C99-...}
+;   HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\{7C3B5E11-...}
+;   HKCU\Software\WOW6432Node\...\Uninstall\{2A4E1C99-...}
+;   HKCU\Software\WOW6432Node\...\Uninstall\{7C3B5E11-...}
+;
+; 注意：删除后，本地检查会在下一轮（约 15 分钟）或下一次点击连接时
+;       重新报出 "SoftwareRisk: required_list:{...Crowdstrike... level:High}"，
+;       服务端将恢复拦截 (3015 / 10210002)。
+; ============================================================
+
+[-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\{2A4E1C99-1B3F-4A1B-9C3E-5D7F8A9B0C1D}]
+
+[-HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\{7C3B5E11-4D2A-4F8B-B6C4-2E9A1D3B7F52}]
+
+[-HKEY_CURRENT_USER\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{2A4E1C99-1B3F-4A1B-9C3E-5D7F8A9B0C1D}]
+
+[-HKEY_CURRENT_USER\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{7C3B5E11-4D2A-4F8B-B6C4-2E9A1D3B7F52}]
